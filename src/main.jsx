@@ -1,8 +1,12 @@
 import { StrictMode, useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Auth from './Auth.jsx'
+import CreaSessione from './pages/CreaSessione.jsx'
+import Unisciti from './pages/Unisciti.jsx'
+import Sessione from './pages/Sessione.jsx'
 import { supabase } from './supabase.js'
 
 function Root() {
@@ -26,7 +30,19 @@ function Root() {
     </div>
   )
 
-  return sessione ? <App sessione={sessione} /> : <Auth />
+  if (!sessione) return <Auth />
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App sessione={sessione} />} />
+        <Route path="/crea-sessione" element={<CreaSessione />} />
+        <Route path="/unisciti" element={<Unisciti />} />
+        <Route path="/sessione/:sessioneId" element={<Sessione />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 createRoot(document.getElementById('root')).render(

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import {
   Shield, Plus, Trash2, ChevronRight, ChevronLeft,
   Dice5, Skull, Copy, RotateCcw, Crown, User, Ghost, Swords,
-  Sparkles, Zap, Footprints, Check, ScrollText, UserPlus, Pencil, X, Save, BookUser
+  Sparkles, Zap, Footprints, Check, ScrollText, UserPlus, Pencil, X, Save, BookUser, LogOut
 } from 'lucide-react';
+import { supabase } from './supabase.js';
 import './App.css';
 
 /* ENGINE */
@@ -123,7 +124,7 @@ function SchedaEditor({ valore, onSalva, onAnnulla }) {
   );
 }
 
-export default function IniziativaApp() {
+export default function IniziativaApp({ sessione }) {
   const [personaggi, setPersonaggi] = useState([]);
   const [combattenti, setCombattenti] = useState([]);
   const [tab, setTab] = useState("schede");
@@ -133,6 +134,10 @@ export default function IniziativaApp() {
   const [bozza, setBozza] = useState(bozzaMostro());
   const [importi, setImporti] = useState({});
   const [schedaInModifica, setSchedaInModifica] = useState(null);
+
+  const nomeUtente = sessione?.user?.user_metadata?.username
+    || sessione?.user?.email?.split('@')[0]
+    || 'Avventuriero';
 
   const indiceAttivo = combattenti.findIndex((c) => c.id === attivoId);
 
@@ -221,6 +226,12 @@ export default function IniziativaApp() {
           {fase === "combat" && tab === "pugna" && (
             <div className="round-chip"><span className="round-label">Round</span><span className="round-num">{round}</span></div>
           )}
+          <div className="header-utente">
+            <span className="header-username">{nomeUtente}</span>
+            <button className="btn btn-ghost btn-logout" onClick={() => supabase.auth.signOut()} title="Esci dall'account">
+              <LogOut size={13} /> Esci
+            </button>
+          </div>
         </header>
 
         <nav className="tabs">
