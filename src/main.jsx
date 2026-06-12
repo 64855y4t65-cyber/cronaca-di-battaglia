@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Auth from './Auth.jsx'
+import SceltaRuolo from './pages/SceltaRuolo.jsx'
 import CreaSessione from './pages/CreaSessione.jsx'
 import Unisciti from './pages/Unisciti.jsx'
 import Sessione from './pages/Sessione.jsx'
@@ -35,10 +36,11 @@ function Root() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App sessione={sessione} />} />
+        <Route path="/" element={<SceltaRuolo />} />
         <Route path="/crea-sessione" element={<CreaSessione />} />
         <Route path="/unisciti" element={<Unisciti />} />
         <Route path="/sessione/:sessioneId" element={<Sessione />} />
+        <Route path="/combat-tracker" element={<App sessione={sessione} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
